@@ -1,0 +1,39 @@
+version: "3.8"
+services:
+  reverseproxy:
+    image: reverseproxy
+    ports: 
+      - 8080:8080
+    depends_on:
+      - feed-service
+      - user-service
+  user-service:
+    image: user-service:local
+    environment:
+      POSTGRES_HOST: $POSTGRES_HOST
+      POSTGRES_DATABASE: $POSTGRES_DATABASE
+      POSTGRES_USERNAME: $POSTGRES_USERNAME
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+      JWT_SECRET: $JWT_SECRET
+      AWS_REGION: $AWS_REGION 
+      AWS_PROFILE: $AWS_PROFILE 
+      AWSMEDIABUCKET: $AWSMEDIABUCKET
+      URL: "http://localhost:8100"
+  feed-service:
+    image: feed-service:local
+    volumes:
+      - C:/Users/kufra/.aws:/root/.aws
+    environment:
+      POSTGRES_HOST: $POSTGRES_HOST
+      POSTGRES_DATABASE: $POSTGRES_DATABASE
+      POSTGRES_USERNAME: $POSTGRES_USERNAME
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+      JWT_SECRET: $JWT_SECRET
+      AWS_REGION: $AWS_REGION 
+      AWS_PROFILE: $AWS_PROFILE 
+      AWSMEDIABUCKET: $AWSMEDIABUCKET
+      URL: "http://localhost:8100"
+  front-end-service:
+    image: front-end-service:local
+    ports:
+      - "8100:80"

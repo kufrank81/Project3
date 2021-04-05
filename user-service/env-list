@@ -1,0 +1,5 @@
+POSTGRES_HOST=udagramfrankdev.cvhrakaw7uzh.us-east-1.rds.amazonaws.com
+POSTGRES_DATABASE=udagramfrankdev
+POSTGRES_USERNAME=udagramfrankdev
+POSTGRES_PASSWORD=www.Password9.com
+JWT_SECRET=helloWorld

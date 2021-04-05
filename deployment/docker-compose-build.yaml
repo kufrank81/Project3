@@ -1,0 +1,18 @@
+version: "3.8"
+services:
+  reverseproxy:
+    build:
+      context: .
+    image: reverseproxy
+  user-service:
+    build:
+      context: ../user-service
+    image: user-service:local
+  feed-service:
+    build:
+      context: ../feed-service
+    image: feed-service:local
+  front-end-service:
+    build:
+      context: ../front-end-service
+    image: front-end-service:local
