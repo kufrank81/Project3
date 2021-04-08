@@ -9,13 +9,13 @@ before_install:
   - docker -v && docker-compose -v
   - sudo rm /usr/local/bin/docker-compose
   - sudo curl -L "https://github.com/docker/compose/releases/download/1.29.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose 
-  - chmod +x /usr/local/bin
+  - sudo chmod +x /usr/local/bin
   - sudo curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
   - sudo curl -LO "https://dl.k8s.io/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
   - echo "$(<kubectl.sha256) kubectl" | sha256sum --check
   - sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
   - kubectl version --client
-  - mkdir ${HOME}/.kube
+  - sudo mkdir ${HOME}/.kube
   - echo "$KUBE_CONFIG" | base64 --decode > ${HOME}/.kube/config
   - sudo curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" 
   - sudo unzip awscliv2.zip
