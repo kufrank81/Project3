@@ -52,6 +52,8 @@ script:
   - docker push $DOCKER_USERNAME/feed-service
   - docker push $DOCKER_USERNAME/user-service
   - docker push $DOCKER_USERNAME/udagram-reverse-proxy
+  - docker-compose -f docker-compose-build.yaml build --parallel
+  - docker-compose -f docker-compose-build.yaml push
 
 after_success:
   
