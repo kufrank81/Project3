@@ -3,16 +3,16 @@ services:
   reverseproxy:
     build:
       context: .
-    image: reverseproxy
+    image: $DOCKER_USERNAME/udagram-reverse-proxy
   user-service:
     build:
       context: ../user-service
-    image: user-service:local
+    image: $DOCKER_USERNAME/user-service:latest
   feed-service:
     build:
       context: ../feed-service
-    image: feed-service:local
+    image: $DOCKER_USERNAME/feed-service:latest
   front-end-service:
     build:
       context: ../front-end-service
-    image: front-end-service:local
+    image: $DOCKER_USERNAME/front-end-service:latest

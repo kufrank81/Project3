@@ -5,6 +5,25 @@ node_js:
 services:
   - docker
 
+before_install:
+  - docker -v && docker-compose -v
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L "https://github.com/docker/compose/releases/download/1.29.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose 
+  - chmod +x /usr/local/bin
+  - sudo curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+  - curl -LO "https://dl.k8s.io/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
+  - echo "$(<kubectl.sha256) kubectl" | sha256sum --check
+  - sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+  - kubectl version --client
+  - mkdir ${HOME}/.kube
+  - echo "$KUBE_CONFIG" | base64 --decode > ${HOME}/.kube/config
+  - curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" 
+  - unzip awscliv2.zip
+  - sudo ./aws/install
+  - aws --version
+  - echo "$AWS_PROFILE_BASE64" | base64 --decode > ${HOME}/.aws/credentials
+
+
 # Pre-testing installs
 install:
   - echo "nothing needs to be installed"
@@ -12,21 +31,27 @@ install:
 # Scripts to be run such as tests
 before_script:
   - echo "no tests"
+  - echo "$DOCKER_ENV" | base64 --decode > /deployment/.env
 
 script:
   - docker --version # print the version for logging
   - cd front-end-service
   - docker build -t front-end-service .
-  - docker tag front-end-service kufrank81/front-end-service:latest
+  - docker tag front-end-service $DOCKER_USERNAME/front-end-service:latest
   - cd ../feed-service
   - docker build -t feed-service .
-  - docker tag feed-service kufrank81/feed-service:latest
+  - docker tag feed-service $DOCKER_USERNAME/feed-service:latest
   - cd ../user-service
   - docker build -t user-service .
-  - docker tag user-service kufrank81/user-service:latest
+  - docker tag user-service $DOCKER_USERNAME/user-service:latest
+  - cd ../deployment
+  - docker build -t udagram-reverse-proxy .
+  - docker tag udagram-reverse-proxy $DOCKER_USERNAME/udagram-reverse-proxy:latest
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - docker push $DOCKER_USERNAME/front-end-service
+  - docker push $DOCKER_USERNAME/feed-service
+  - docker push $DOCKER_USERNAME/user-service
+  - docker push $DOCKER_USERNAME/udagram-reverse-proxy
 
 after_success:
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-  - docker push kufrank81/front-end-service
-  - docker push kufrank81/feed-service
-  - docker push kufrank81/user-service
+  
