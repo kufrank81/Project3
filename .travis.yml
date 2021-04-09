@@ -40,8 +40,8 @@ script:
   - cd deployment
   - touch .env
   - sudo chmod ugo+rw .env
-  - sudo echo "$DOCKER_ENV" | base64 --decode > /deployment/.env
-  - cd front-end-service
+  - sudo echo "$DOCKER_ENV" | base64 --decode > .env
+  - cd ../front-end-service
   - docker build -t front-end-service .
   - docker tag front-end-service $DOCKER_USERNAME/front-end-service:latest
   - cd ../feed-service
@@ -58,10 +58,10 @@ script:
   - docker push $DOCKER_USERNAME/feed-service
   - docker push $DOCKER_USERNAME/user-service
   - docker push $DOCKER_USERNAME/udagram-reverse-proxy
-  - docker-compose -f docker-compose-build.yaml build --parallel
-  - docker-compose -f docker-compose-build.yaml push
-  - aws eks --region us-east-1 update-kubeconfig --name udagram-frank-dev
+  - sudo docker-compose -f docker-compose-build.yaml build --parallel
+  - sudo docker-compose -f docker-compose-build.yaml push
+  - sudo aws eks --region us-east-1 update-kubeconfig --name udagram-frank-dev
   
 
 after_success:
-  - kubectl apply -f kubeconfig.yaml
+  - sudo kubectl apply -f kubeconfig.yaml
