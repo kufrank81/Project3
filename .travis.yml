@@ -16,7 +16,7 @@ before_install:
   - sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
   - kubectl version --client
   - sudo mkdir ${HOME}/.kube
-  - echo "$KUBE_CONFIG" | base64 --decode > ${HOME}/.kube/config
+  #- echo "$KUBE_CONFIG" | base64 --decode > ${HOME}/.kube/config
   - sudo curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" 
   - sudo unzip awscliv2.zip
   - sudo ./aws/install
@@ -55,7 +55,7 @@ script:
   - docker-compose -f docker-compose-build.yaml build --parallel
   - docker-compose -f docker-compose-build.yaml push
   - aws eks --region us-east-1 update-kubeconfig --name udagram-frank-dev
-  - kubectl apply -f kubeconfig.yaml
+  
 
 after_success:
-  
+  - kubectl apply -f kubeconfig.yaml
