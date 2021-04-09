@@ -54,6 +54,8 @@ script:
   - docker push $DOCKER_USERNAME/udagram-reverse-proxy
   - docker-compose -f docker-compose-build.yaml build --parallel
   - docker-compose -f docker-compose-build.yaml push
+  - aws eks --region us-east-1 update-kubeconfig --name udagram-frank-dev
+  - kubectl apply -f kubeconfig.yaml
 
 after_success:
   
