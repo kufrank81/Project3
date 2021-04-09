@@ -21,6 +21,8 @@ before_install:
   - sudo unzip awscliv2.zip
   - sudo ./aws/install
   - aws --version
+  - sudo mkdir ${HOME}/.aws
+  - sudo touch ${HOME}/.aws/credentials
   - echo "$AWS_PROFILE_BASE64" | base64 --decode > ${HOME}/.aws/credentials
 
 
