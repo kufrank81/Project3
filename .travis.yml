@@ -23,7 +23,7 @@ before_install:
   - aws --version
   - sudo mkdir ${HOME}/.aws
   - sudo touch ${HOME}/.aws/credentials
-  - echo "$AWS_PROFILE_BASE64" | base64 --decode > ${HOME}/.aws/credentials
+  - sudo echo "$AWS_PROFILE_BASE64" | base64 --decode > ${HOME}/.aws/credentials
 
 
 # Pre-testing installs
