@@ -58,8 +58,8 @@ script:
   - docker push $DOCKER_USERNAME/feed-service
   - docker push $DOCKER_USERNAME/user-service
   - docker push $DOCKER_USERNAME/udagram-reverse-proxy
-  - sudo docker-compose -f docker-compose-build.yaml build --parallel
-  - sudo docker-compose -f docker-compose-build.yaml push
+  #- sudo docker-compose -f docker-compose-build.yaml build --parallel
+  #- sudo docker-compose -f docker-compose-build.yaml push
   - sudo aws eks --region us-east-1 update-kubeconfig --name udagram-frank-dev
   
 
