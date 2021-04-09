@@ -34,10 +34,13 @@ install:
 # Scripts to be run such as tests
 before_script:
   - echo "no tests"
-  - echo "$DOCKER_ENV" | base64 --decode > /deployment/.env
 
 script:
   - docker --version # print the version for logging
+  - cd deployment
+  - touch .env
+  - sudo chmod ugo+rw .env
+  - sudo echo "$DOCKER_ENV" | base64 --decode > /deployment/.env
   - cd front-end-service
   - docker build -t front-end-service .
   - docker tag front-end-service $DOCKER_USERNAME/front-end-service:latest
