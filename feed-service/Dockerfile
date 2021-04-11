@@ -9,7 +9,7 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 # Install dependencies
-RUN npm install
+RUN npm ci
 
 # Copy app source
 COPY . .
@@ -18,4 +18,5 @@ COPY . .
 EXPOSE 8080
 
 # Define the Docker image's behavior at runtime
-CMD ["node", "./www/server.js"]
+#CMD ["node", "./www/server.js"]
+CMD ["node", "run", "prod"]
