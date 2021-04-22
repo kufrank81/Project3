@@ -26,8 +26,9 @@ import {V0_FEED_MODELS} from './controllers/v0/model.index';
       'X-Access-Token', 'Authorization',
     ],
     methods: 'GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE',
-    origin: config.url,
+    origin: true , //config.url,
   }));
+
 
   app.use('/api/v0/', IndexRouter);
 

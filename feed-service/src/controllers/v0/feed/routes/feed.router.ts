@@ -34,6 +34,7 @@ router.get('/', async (req: Request, res: Response) => {
       item.url = AWS.getGetSignedUrl(item.url);
     }
   });
+  res.set('Access-Control-Allow-Origin', '*');
   res.send(items);
 });
 
@@ -42,6 +43,7 @@ router.get('/:id',
     async (req: Request, res: Response) => {
       const {id} = req.params;
       const item = await FeedItem.findByPk(id);
+      res.set('Access-Control-Allow-Origin', '*');
       res.send(item);
     });
 
@@ -51,6 +53,7 @@ router.get('/signed-url/:fileName',
     async (req: Request, res: Response) => {
       const {fileName} = req.params;
       const url = AWS.getPutSignedUrl(fileName);
+      res.set('Access-Control-Allow-Origin', '*');
       res.status(201).send({url: url});
     });
 
@@ -77,6 +80,7 @@ router.post('/',
       const savedItem = await item.save();
 
       savedItem.url = AWS.getGetSignedUrl(savedItem.url);
+      res.set('Access-Control-Allow-Origin', '*');
       res.status(201).send(savedItem);
     });
 
