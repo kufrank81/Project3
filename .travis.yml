@@ -44,23 +44,23 @@ script:
   - touch .env
   - sudo chmod ugo+rw .env
   - sudo echo "$DOCKER_ENV" | base64 --decode > .env
-  #- cd ../front-end-service
-  #- docker build -t front-end-service .
-  #- docker tag front-end-service $DOCKER_USERNAME/front-end-service:latest
-  #- cd ../feed-service
-  #- docker build -t feed-service .
-  #- docker tag feed-service $DOCKER_USERNAME/feed-service:latest
-  #- cd ../user-service
-  #- docker build -t user-service .
-  #- docker tag user-service $DOCKER_USERNAME/user-service:latest
-  #- cd ../deployment
-  #- docker build -t udagram-reverse-proxy .
-  #- docker tag udagram-reverse-proxy $DOCKER_USERNAME/udagram-reverse-proxy:latest
+  - cd ../front-end-service
+  - docker build -t front-end-service .
+  - docker tag front-end-service $DOCKER_USERNAME/front-end-service:latest
+  - cd ../feed-service
+  - docker build -t feed-service .
+  - docker tag feed-service $DOCKER_USERNAME/feed-service:latest
+  - cd ../user-service
+  - docker build -t user-service .
+  - docker tag user-service $DOCKER_USERNAME/user-service:latest
+  - cd ../deployment
+  - docker build -t udagram-reverse-proxy .
+  - docker tag udagram-reverse-proxy $DOCKER_USERNAME/udagram-reverse-proxy:latest
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-  #- docker push $DOCKER_USERNAME/front-end-service
-  #- docker push $DOCKER_USERNAME/feed-service
-  #- docker push $DOCKER_USERNAME/user-service
-  #- docker push $DOCKER_USERNAME/udagram-reverse-proxy
+  - docker push $DOCKER_USERNAME/front-end-service
+  - docker push $DOCKER_USERNAME/feed-service
+  - docker push $DOCKER_USERNAME/user-service
+  - docker push $DOCKER_USERNAME/udagram-reverse-proxy
   - sudo docker-compose -f docker-compose-build.yaml build --parallel
   - sudo docker-compose -f docker-compose-build.yaml push
   - sudo aws eks --region us-east-1 update-kubeconfig --name udagram-frank-dev
