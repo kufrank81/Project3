@@ -66,7 +66,7 @@ script:
   - sudo docker-compose -f docker-compose-build.yaml build --parallel
   - sudo docker-compose -f docker-compose-build.yaml push
   - sudo aws eks update-kubeconfig --region us-west-2 --name my-cluster
+  - sudo kubectl delete pods --all
   
 
 after_success:
-  - sudo kubectl delete pods --all
