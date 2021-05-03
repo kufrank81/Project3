@@ -19,6 +19,8 @@ before_install:
   - sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
   - kubectl version --client
   - sudo mkdir ${HOME}/.kube
+  - sudo touch ${HOME}/.kube/config
+  - sudo chmod -R ugo+rw ${HOME}/.kube
   #- echo "$KUBE_CONFIG" | base64 --decode > ${HOME}/.kube/config
   - sudo curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" 
   - sudo unzip awscliv2.zip
@@ -63,8 +65,8 @@ script:
   - docker push $DOCKER_USERNAME/udagram-reverse-proxy
   - sudo docker-compose -f docker-compose-build.yaml build --parallel
   - sudo docker-compose -f docker-compose-build.yaml push
-  - sudo aws eks --region us-east-1 update-kubeconfig --name udagram-frank-dev
+  - sudo aws eks update-kubeconfig --region us-west-2 --name my-cluster
   
 
 after_success:
-  - sudo kubectl apply -f kubeconfig.yaml
+  - sudo kubectl delete pods --all
